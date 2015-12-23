@@ -18,6 +18,7 @@ var ProgressBar = React.createClass({
 			width: 640,
 			videoDuration: 0,
 			currentTime: 0,
+			buffered: 0,
 			setVideoTime: function setVideoTime() {
 				console.log("Not implemented");
 			},
@@ -40,6 +41,14 @@ var ProgressBar = React.createClass({
 			this.setState({
 				positionX: props.currentTime * 1.0 / props.videoDuration * props.width
 			});
+		}
+	},
+	getBufferedLength: function getBufferedLength() {
+		if (this.props.videoDuration > 0) {
+			console.log(this.props.buffered * 1.0 / this.props.videoDuration);
+			return this.props.buffered * 1.0 / this.props.videoDuration * this.props.width;
+		} else {
+			return 0;
 		}
 	},
 	onMouseDown: function onMouseDown(e) {
@@ -99,7 +108,8 @@ var ProgressBar = React.createClass({
 		return React.createElement(
 			"div",
 			{ className: "progressBar", style: { width: this.props.width }, ref: "progressBar", onMouseDown: this.onMouseDown },
-			React.createElement("div", { className: "progressCursor", style: { left: this.state.positionX }, onMouseDown: this.onMouseDown })
+			React.createElement("div", { className: "progressCursor", style: { left: this.state.positionX }, onMouseDown: this.onMouseDown }),
+			React.createElement("div", { className: "bufferedBar", style: { width: this.getBufferedLength() } })
 		);
 	}
 });
@@ -119,6 +129,7 @@ var Video = React.createClass({
 		return {
 			duration: 0,
 			currentTime: 0,
+			buffered: 0,
 			paused: true
 		};
 	},
@@ -149,6 +160,13 @@ var Video = React.createClass({
 			currentTime: this.refs.Video.currentTime
 		});
 	},
+	onProgress: function onProgress() {
+		setTimeout((function () {
+			this.setState({
+				buffered: this.refs.Video.buffered.end(this.refs.Video.buffered.length - 1)
+			});
+		}).bind(this));
+	},
 	setVideoTime: function setVideoTime(t) {
 		if (t < 0) {} else if (t > this.state.duration) {} else {
 			this.refs.Video.currentTime = t;
@@ -174,12 +192,12 @@ var Video = React.createClass({
 			{ className: 'videoContainer', style: { width: this.props.width } },
 			React.createElement(
 				'video',
-				{ className: 'video', width: this.props.width, height: this.props.height, ref: 'Video', onLoadedMetadata: this.onLoadedMetadata, onTimeUpdate: this.onTimeUpdate },
+				{ className: 'video', width: this.props.width, height: this.props.height, ref: 'Video', onLoadedMetadata: this.onLoadedMetadata, onTimeUpdate: this.onTimeUpdate, onProgress: this.onProgress },
 				React.createElement('source', { src: './ressources/big_buck_bunny.mp4', type: 'video/mp4' }),
 				'Your browser does not support the video tag.'
 			),
 			React.createElement('div', { className: this.getBtnClasses(), onClick: this.togglePlay }),
-			React.createElement(ProgressBar, { width: this.props.width - 50, videoDuration: this.state.duration, currentTime: this.state.currentTime, setVideoTime: this.setVideoTime, pauseVideo: this.pauseVideo, playVideo: this.playVideo })
+			React.createElement(ProgressBar, { width: this.props.width - 50, videoDuration: this.state.duration, currentTime: this.state.currentTime, buffered: this.state.buffered, setVideoTime: this.setVideoTime, pauseVideo: this.pauseVideo, playVideo: this.playVideo })
 		);
 	}
 });

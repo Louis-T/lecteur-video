@@ -13,6 +13,7 @@ var ProgressBar = React.createClass({
 			width: 640,
 			videoDuration: 0,
 			currentTime: 0,
+			buffered: 0,
 			setVideoTime: function(){console.log("Not implemented");},
 			pauseVideo: function(){console.log("Not implemented");},
 			resumeVideo: function(){console.log("Not implemented");}
@@ -29,6 +30,15 @@ var ProgressBar = React.createClass({
 			this.setState({
 				positionX : props.currentTime * 1.0 / props.videoDuration * props.width
 			});
+		}
+	},
+	getBufferedLength: function(){
+		if(this.props.videoDuration > 0){
+			console.log(this.props.buffered * 1.0 / this.props.videoDuration);
+			return this.props.buffered * 1.0 / this.props.videoDuration * this.props.width;
+		}
+		else {
+			return 0;
 		}
 	},
 	onMouseDown: function(e){
@@ -90,6 +100,7 @@ var ProgressBar = React.createClass({
 		return (
 			<div className="progressBar" style={{width: this.props.width}} ref="progressBar" onMouseDown={this.onMouseDown}>
 				<div className="progressCursor" style={{left: this.state.positionX}} onMouseDown={this.onMouseDown} ></div>
+				<div className="bufferedBar" style={{width: this.getBufferedLength()}}></div>
 			</div>
 		);
 	}

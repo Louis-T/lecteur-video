@@ -6,6 +6,7 @@ var Video = React.createClass({
 	    return {
 	       duration: 0,
 		   currentTime: 0,
+		   buffered: 0,
 		   paused: true
 	    };
 	},
@@ -38,6 +39,13 @@ var Video = React.createClass({
 			currentTime: this.refs.Video.currentTime
 		});
 	},
+	onProgress: function(){
+		setTimeout((function(){
+				this.setState({
+					buffered: this.refs.Video.buffered.end(this.refs.Video.buffered.length - 1)
+				});
+			}).bind(this));
+	},
 	setVideoTime: function(t) {
 		if(t < 0){
 			
@@ -65,12 +73,12 @@ var Video = React.createClass({
 	render: function(){
 		return (
 			<div className="videoContainer" style={{width: this.props.width}}>
-				<video className="video" width={this.props.width} height={this.props.height} ref="Video" onLoadedMetadata={this.onLoadedMetadata} onTimeUpdate={this.onTimeUpdate}>
+				<video className="video" width={this.props.width} height={this.props.height} ref="Video" onLoadedMetadata={this.onLoadedMetadata} onTimeUpdate={this.onTimeUpdate} onProgress={this.onProgress} >
 					<source src="./ressources/big_buck_bunny.mp4" type="video/mp4" />
 					Your browser does not support the video tag.
 				</video>
 				<div className={this.getBtnClasses()} onClick={this.togglePlay} ></div>
-				<ProgressBar width={this.props.width - 50} videoDuration={this.state.duration} currentTime={this.state.currentTime} setVideoTime={this.setVideoTime} pauseVideo={this.pauseVideo} playVideo={this.playVideo} />
+				<ProgressBar width={this.props.width - 50} videoDuration={this.state.duration} currentTime={this.state.currentTime} buffered={this.state.buffered} setVideoTime={this.setVideoTime} pauseVideo={this.pauseVideo} playVideo={this.playVideo} />
 			</div>
 		);
 	}
