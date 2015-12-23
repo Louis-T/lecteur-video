@@ -1,0 +1,3 @@
+browserify -t [ babelify --presets [ react ] ] main.js -o bundle.js
+
+http://hugogiraudel.com/2015/06/18/styling-react-components-in-sass/
