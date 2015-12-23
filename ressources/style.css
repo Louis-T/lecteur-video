@@ -1,10 +1,11 @@
 .progressBar {
-	background: gold;
+	bottom: 22px;
+	right: 5px;
+	background: #f1f1f1;
 	height: 6px;
-	position: relative;
-	margin-top:10px;
-	border-radius: 2px;
-	border: black solid 2px;
+	position: absolute;
+	border-radius: 3px;
+	border: #525252 solid 2px;
 	box-sizing: border-box;
 }
 
@@ -13,7 +14,29 @@
 	width: 12px;
 	margin-left: -7px;
 	margin-top: -5px;
-	background: silver;
+	background: #525252;
 	position: absolute;
-	border-radius: 6px;
+	border-radius: 5px;
+	box-sizing: border-box;
+	border: #f1f1f1 solid 2px;
+	cursor: pointer;
+}
+
+.videoContainer {
+	position: relative;
+}
+
+.videoBtn {
+	width: 40px;
+	height: 40px;
+	background-image: url("./player_pause.png");
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+	position: absolute;
+	bottom: 5px;
+}
+
+.videoBtnPaused {
+	background-image: url("./player_play.png") !important;
 }
