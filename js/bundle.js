@@ -128,8 +128,8 @@ var Video = React.createClass({
 			height: 360
 		};
 	},
-	getPausedText: function getPausedText() {
-		return this.state.paused ? "Play" : "Pause";
+	getBtnClasses: function getBtnClasses() {
+		return "videoBtn" + (this.state.paused ? " videoBtnPaused" : "");
 	},
 	componentDidMount: function componentDidMount() {},
 	componentDidUpdate: function componentDidUpdate(props, state) {
@@ -171,19 +171,15 @@ var Video = React.createClass({
 	render: function render() {
 		return React.createElement(
 			'div',
-			null,
+			{ className: 'videoContainer', style: { width: this.props.width } },
 			React.createElement(
 				'video',
 				{ className: 'video', width: this.props.width, height: this.props.height, ref: 'Video', onLoadedMetadata: this.onLoadedMetadata, onTimeUpdate: this.onTimeUpdate },
 				React.createElement('source', { src: './ressources/big_buck_bunny.mp4', type: 'video/mp4' }),
 				'Your browser does not support the video tag.'
 			),
-			React.createElement(
-				'button',
-				{ onClick: this.togglePlay },
-				this.getPausedText()
-			),
-			React.createElement(ProgressBar, { width: this.props.width, videoDuration: this.state.duration, currentTime: this.state.currentTime, setVideoTime: this.setVideoTime, pauseVideo: this.pauseVideo, playVideo: this.playVideo })
+			React.createElement('div', { className: this.getBtnClasses(), onClick: this.togglePlay }),
+			React.createElement(ProgressBar, { width: this.props.width - 50, videoDuration: this.state.duration, currentTime: this.state.currentTime, setVideoTime: this.setVideoTime, pauseVideo: this.pauseVideo, playVideo: this.playVideo })
 		);
 	}
 });
