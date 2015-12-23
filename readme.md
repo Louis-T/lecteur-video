@@ -1,1 +1,1 @@
-Lecteur Vidéo (react.js)
+Lecteur VidÃ©o (react.js)
