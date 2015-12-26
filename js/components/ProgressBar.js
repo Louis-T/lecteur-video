@@ -34,7 +34,6 @@ var ProgressBar = React.createClass({
 	},
 	getBufferedLength: function(){
 		if(this.props.videoDuration > 0){
-			console.log(this.props.buffered * 1.0 / this.props.videoDuration);
 			return this.props.buffered * 1.0 / this.props.videoDuration * this.props.width;
 		}
 		else {
@@ -42,20 +41,21 @@ var ProgressBar = React.createClass({
 		}
 	},
 	onMouseDown: function(e){
-		var newPositionX = e.clientX - this.state.offsetLeft;
-		if(newPositionX < 0){
-			newPositionX = 0;
+		if(this.props.videoDuration > 0){
+			var newPositionX = e.clientX - this.state.offsetLeft;
+			if(newPositionX < 0){
+				newPositionX = 0;
+			}
+			else if(newPositionX > this.props.width){
+				newPositionX = this.props.width;
+			}
+			
+			this.setState({
+				dragging: true,
+				positionX  : newPositionX
+			});
+			this.props.pauseVideo();
 		}
-		else if(newPositionX > this.props.width){
-			newPositionX = this.props.width;
-		}
-		
-		this.setState({
-			dragging: true,
-			positionX  : newPositionX
-		});
-		this.props.pauseVideo();
-		
 		e.stopPropagation();
 		e.preventDefault();
 	},

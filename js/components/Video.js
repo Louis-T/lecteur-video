@@ -17,7 +17,12 @@ var Video = React.createClass({
 		};
 	},
 	getBtnClasses: function(){
-		return "videoBtn"+(this.state.paused?" videoBtnPaused":"");
+		if(this.state.duration == 0){
+			return "videoBtn videoBtnWaiting";
+		}
+		else {	
+			return "videoBtn"+(this.state.paused?" videoBtnPaused":"");
+		}
 	},
 	componentDidMount: function() {
 		
