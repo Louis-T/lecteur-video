@@ -21,11 +21,10 @@ describe('Testing my VideoPlayer', function() {
 	var video_react = TestUtils.findRenderedComponentWithType(myVideoPlayer, Video);
 	var btn_dom = TestUtils.findRenderedDOMComponentWithClass(video_react, 'videoBtn');
 
-	assert.equal(btn_dom.className, "videoBtn videoBtnPaused");
+	assert.equal(btn_dom.className, "videoBtn videoBtnWaiting");
 	assert.equal(video_react.state.paused, true);
 	TestUtils.Simulate.click(btn_dom);
-	assert.equal(btn_dom.className, "videoBtn");
-	assert.equal(video_react.state.paused, false);
+	assert.equal(video_react.state.paused, true);
   });
 
 });
