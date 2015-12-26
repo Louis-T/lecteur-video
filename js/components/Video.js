@@ -63,9 +63,11 @@ var Video = React.createClass({
 		}
 	},
 	togglePlay: function(){
-		this.setState({
-			paused: !this.state.paused
-		});
+		if(this.state.duration > 0){
+			this.setState({
+				paused: !this.state.paused
+			});
+		}
 	},
 	pauseVideo: function(){
 		this.refs.Video.pause();
