@@ -47,3 +47,7 @@
 .videoBtnPaused {
 	background-image: url("./player_play.png") !important;
 }
+
+.videoBtnWaiting {
+	background-image: url("./Snakes chasing-32.gif") !important;
+}

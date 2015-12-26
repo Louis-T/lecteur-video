@@ -45,26 +45,26 @@ var ProgressBar = React.createClass({
 	},
 	getBufferedLength: function getBufferedLength() {
 		if (this.props.videoDuration > 0) {
-			console.log(this.props.buffered * 1.0 / this.props.videoDuration);
 			return this.props.buffered * 1.0 / this.props.videoDuration * this.props.width;
 		} else {
 			return 0;
 		}
 	},
 	onMouseDown: function onMouseDown(e) {
-		var newPositionX = e.clientX - this.state.offsetLeft;
-		if (newPositionX < 0) {
-			newPositionX = 0;
-		} else if (newPositionX > this.props.width) {
-			newPositionX = this.props.width;
+		if (this.props.videoDuration > 0) {
+			var newPositionX = e.clientX - this.state.offsetLeft;
+			if (newPositionX < 0) {
+				newPositionX = 0;
+			} else if (newPositionX > this.props.width) {
+				newPositionX = this.props.width;
+			}
+
+			this.setState({
+				dragging: true,
+				positionX: newPositionX
+			});
+			this.props.pauseVideo();
 		}
-
-		this.setState({
-			dragging: true,
-			positionX: newPositionX
-		});
-		this.props.pauseVideo();
-
 		e.stopPropagation();
 		e.preventDefault();
 	},
@@ -140,7 +140,11 @@ var Video = React.createClass({
 		};
 	},
 	getBtnClasses: function getBtnClasses() {
-		return "videoBtn" + (this.state.paused ? " videoBtnPaused" : "");
+		if (this.state.duration == 0) {
+			return "videoBtn videoBtnWaiting";
+		} else {
+			return "videoBtn" + (this.state.paused ? " videoBtnPaused" : "");
+		}
 	},
 	componentDidMount: function componentDidMount() {},
 	componentDidUpdate: function componentDidUpdate(props, state) {
